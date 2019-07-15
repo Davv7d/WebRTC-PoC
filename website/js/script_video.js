@@ -23,15 +23,13 @@ const constraints = window.constraints = {
   */
 
 // Variable for sendingour stream of video
-var localstream; // var or not to var
+
 
 function handleSuccess(stream,videoDestiny) {
   // Setting adress of video object to variable 
   const video = document.querySelector(videoDestiny);
   //collection information about device used(camera )
   const videoTracks = stream.getVideoTracks();
-  // saving the data stream to a global variable
-  localstream = stream; 
   console.log('Got stream with constraints:', constraints);
   console.log(`Using video device: ${videoTracks[0].label}`);
   //console.log(`videoTracks[0].stop() ${videoTracks[0].stop()}`);
@@ -63,7 +61,9 @@ function errorMsg(msg, error) {
   }
 }
 
-async function init(e,videoOwner) {
+
+
+async function init(e,videoOwner,run) {
   
   try {  
     var videoDestiny = videoOwner;
@@ -73,12 +73,18 @@ async function init(e,videoOwner) {
    console.log("! 1",constraints);
     var stream = await navigator.mediaDevices.getUserMedia(constraints);
     console.log("2");
+    if (run == true){
     handleSuccess(stream,videoDestiny);
     console.log("3");
+    }else{
+      return stream;
+    }
+
     e.target.disabled = true;
+  
   } catch (e) {
     handleError(e);
   }
 }
 
-module.exports = {init, constraints, localstream}
+module.exports = {init, constraints}

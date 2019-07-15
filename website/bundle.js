@@ -20,22 +20,73 @@ module.exports = {init}
 var script_video = require('./script_video.js');
 //var script_video = require('./getAudioParameters.js');
 var canvasVideoCapture = require('./canvasVideoCapture.js');
+var rtcp2p = require("./rtcp2p.js");
+
 // Example I
 console.log("abcd");
-document.querySelector('#connectUser').addEventListener('click', e => script_video.init(e,"#videoUser"));
+document.querySelector('#connectUser').addEventListener('click', e => script_video.init(e,"#videoUser",true));
 document.querySelector('#mirrorButton').addEventListener('click', function(){document.querySelector('#mirror').style.display = "inline"});
 
 
 //Example II
 document.querySelector('#snapButton').addEventListener('click',e => {
-    script_video.init(e,"#videoForSnap"),
+    script_video.init(e,"#videoForSnap",true),
     document.querySelector('#snapShot').style.display = "inline"
     });
 document.querySelector('#makeSnapShot').addEventListener('click',e => canvasVideoCapture.init(e,"#videoForSnap","#canvasSnapShot"));
 
 
-//    "start": "nodemon --exec \"npm run parse && node index.js \" --ignore ./website/bundle.js --watch website -e html,js",
-},{"./canvasVideoCapture.js":1,"./script_video.js":3}],3:[function(require,module,exports){
+//Example III
+document.querySelector('#RTCp2pButton').addEventListener('click', function(){document.querySelector('#RTCp2p').style.display = "inline"});
+document.querySelector("#startRTCp2p").addEventListener('click', e => rtcp2p.init(e,"#RTCp2pUser1","#RTCp2pUser2"));
+
+
+//    "start": "nodemon --exec \"npm run parse && node index.js \" --ignore ./website/bundle.js --watch website -e html,js"
+},{"./canvasVideoCapture.js":1,"./rtcp2p.js":3,"./script_video.js":4}],3:[function(require,module,exports){
+
+async function start(){
+    
+}
+
+async function call(){
+
+}
+
+function hangup(){
+    console.log('Ending call');
+
+}
+
+
+async function init(e,streamName,guestName){
+    try{
+        let startTime;
+        const localVideo = document.querySelector(streamName);
+        const guestVideo = document.querySelector(guestName);
+
+        console.log(localVideo,guestName)
+        localVideo.addEventListener('loadedmetadata', function() {
+            console.log(`Local video videoWidth: ${this.videoWidth}px,  videoHeight: ${this.videoHeight}px`);
+          });
+          
+        guestVideo.addEventListener('loadedmetadata', function() {
+            console.log(`Remote video videoWidth: ${this.videoWidth}px,  videoHeight: ${this.videoHeight}px`);
+          });
+          
+        
+    }catch(e){
+        console.log("Error: ",e);
+    }
+    
+
+
+
+}
+
+
+
+module.exports = {init,start,call,hangup}
+},{}],4:[function(require,module,exports){
 'use strict';
 
 // Set multimedia parametrs:
@@ -61,15 +112,13 @@ const constraints = window.constraints = {
   */
 
 // Variable for sendingour stream of video
-var localstream; // var or not to var
+
 
 function handleSuccess(stream,videoDestiny) {
   // Setting adress of video object to variable 
   const video = document.querySelector(videoDestiny);
   //collection information about device used(camera )
   const videoTracks = stream.getVideoTracks();
-  // saving the data stream to a global variable
-  localstream = stream; 
   console.log('Got stream with constraints:', constraints);
   console.log(`Using video device: ${videoTracks[0].label}`);
   //console.log(`videoTracks[0].stop() ${videoTracks[0].stop()}`);
@@ -101,7 +150,9 @@ function errorMsg(msg, error) {
   }
 }
 
-async function init(e,videoOwner) {
+
+
+async function init(e,videoOwner,run) {
   
   try {  
     var videoDestiny = videoOwner;
@@ -111,13 +162,19 @@ async function init(e,videoOwner) {
    console.log("! 1",constraints);
     var stream = await navigator.mediaDevices.getUserMedia(constraints);
     console.log("2");
+    if (run == true){
     handleSuccess(stream,videoDestiny);
     console.log("3");
+    }else{
+      return stream;
+    }
+
     e.target.disabled = true;
+  
   } catch (e) {
     handleError(e);
   }
 }
 
-module.exports = {init, constraints, localstream}
+module.exports = {init, constraints}
 },{}]},{},[2]);

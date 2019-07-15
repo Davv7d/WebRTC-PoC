@@ -15,9 +15,9 @@
             <button id="mirrorButton"> Mirror</button>
             <button id="snapButton">screenButton</button>
             <button id="RTCp2pButton">RTC P2P connection</button>
-            <button>alaaaas</button>
+
         </div>
-            <!--  Example I Mirror-->s
+            <!--  Example I Mirror-->
         <div id = "mirror" style = "display:none">
                 <h1>Video</h1>
                 <video id="videoUser" autoplay playsinline></video>
@@ -43,7 +43,21 @@
         
 
             <!-- Example III Video chat -->
-        <div id="RTCp2p">
+
+        <div id="RTCp2p" style="display:none">
+            <div class="row">
+                <div class="col">
+                    <video id="RTCp2pUser1" autoplay playsinline></video>
+                </div>
+                <div class="col">
+                    <video id="RTCp2pUser2" autoplay playinline></video>
+                </div>
+            </div>
+
+            <button id="startRTCp2p">Start</button>
+            <button id="callRTCp2p">Call</button>
+            <button id="hangupRTCp2p">Hang Up</button>
+
 
 
 
