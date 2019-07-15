@@ -21,6 +21,7 @@ var script_video = require('./script_video.js');
 //var script_video = require('./getAudioParameters.js');
 var canvasVideoCapture = require('./canvasVideoCapture.js');
 // Example I
+console.log("abcd");
 document.querySelector('#connectUser').addEventListener('click', e => script_video.init(e,"#videoUser"));
 document.querySelector('#mirrorButton').addEventListener('click', function(){document.querySelector('#mirror').style.display = "inline"});
 
@@ -31,12 +32,15 @@ document.querySelector('#snapButton').addEventListener('click',e => {
     document.querySelector('#snapShot').style.display = "inline"
     });
 document.querySelector('#makeSnapShot').addEventListener('click',e => canvasVideoCapture.init(e,"#videoForSnap","#canvasSnapShot"));
+
+
+//    "start": "nodemon --exec \"npm run parse && node index.js \" --ignore ./website/bundle.js --watch website -e html,js",
 },{"./canvasVideoCapture.js":1,"./script_video.js":3}],3:[function(require,module,exports){
 'use strict';
 
 // Set multimedia parametrs:
 //  video and audio
-window.constraints = {
+const constraints = window.constraints = {
   audio: false,
   video: {
     width:{
@@ -47,12 +51,10 @@ window.constraints = {
       min: 240,
       max: 720
     }
-    //we can add some CSS filters
-
   }
 };
 
-const constraints = window.constraints;
+
   /*
   You can also declarate things like:
   Frame Rate and which device you wont us
@@ -106,8 +108,11 @@ async function init(e,videoOwner) {
     /*
       Do zrobienia by działało na wszystkich przegladarkach teraz tylko firefox
     */
+   console.log("! 1",constraints);
     var stream = await navigator.mediaDevices.getUserMedia(constraints);
+    console.log("2");
     handleSuccess(stream,videoDestiny);
+    console.log("3");
     e.target.disabled = true;
   } catch (e) {
     handleError(e);

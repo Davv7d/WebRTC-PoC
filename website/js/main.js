@@ -2,6 +2,7 @@ var script_video = require('./script_video.js');
 //var script_video = require('./getAudioParameters.js');
 var canvasVideoCapture = require('./canvasVideoCapture.js');
 // Example I
+console.log("abcd");
 document.querySelector('#connectUser').addEventListener('click', e => script_video.init(e,"#videoUser"));
 document.querySelector('#mirrorButton').addEventListener('click', function(){document.querySelector('#mirror').style.display = "inline"});
 
@@ -12,3 +13,6 @@ document.querySelector('#snapButton').addEventListener('click',e => {
     document.querySelector('#snapShot').style.display = "inline"
     });
 document.querySelector('#makeSnapShot').addEventListener('click',e => canvasVideoCapture.init(e,"#videoForSnap","#canvasSnapShot"));
+
+
+//    "start": "nodemon --exec \"npm run parse && node index.js \" --ignore ./website/bundle.js --watch website -e html,js",

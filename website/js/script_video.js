@@ -2,7 +2,7 @@
 
 // Set multimedia parametrs:
 //  video and audio
-window.constraints = {
+const constraints = window.constraints = {
   audio: false,
   video: {
     width:{
@@ -13,12 +13,10 @@ window.constraints = {
       min: 240,
       max: 720
     }
-    //we can add some CSS filters
-
   }
 };
 
-const constraints = window.constraints;
+
   /*
   You can also declarate things like:
   Frame Rate and which device you wont us
@@ -72,8 +70,11 @@ async function init(e,videoOwner) {
     /*
       Do zrobienia by działało na wszystkich przegladarkach teraz tylko firefox
     */
+   console.log("! 1",constraints);
     var stream = await navigator.mediaDevices.getUserMedia(constraints);
+    console.log("2");
     handleSuccess(stream,videoDestiny);
+    console.log("3");
     e.target.disabled = true;
   } catch (e) {
     handleError(e);
