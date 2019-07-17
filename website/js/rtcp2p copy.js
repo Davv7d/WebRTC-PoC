@@ -3,7 +3,6 @@ const constraints = window.constraints = {
     audio: false,
     video: true
 };
-
 //Ustawienia servera
 const configuration = {
     bundlePolicy:"max-bundle",
@@ -14,8 +13,6 @@ const configuration = {
     }]
 };
 
-
-let startTime;
 const localVideo = document.querySelector("#RTCp2pUser1");
 const guestVideo = document.querySelector("#RTCp2pUser2");
 
@@ -23,21 +20,9 @@ localVideo.addEventListener('loadedmetadata', function() {
     console.log(`Local video videoWidth: ${this.videoWidth}px,  videoHeight: ${this.videoHeight}px`);
   });
   
-  guestVideo.addEventListener('loadedmetadata', function() {
+guestVideo.addEventListener('loadedmetadata', function() {
     console.log(`Remote video videoWidth: ${this.videoWidth}px,  videoHeight: ${this.videoHeight}px`);
   });
-  
-  guestVideo.addEventListener('resize', () => {
-    console.log(`Remote video size changed to ${guestVideo.videoWidth}x${guestVideo.videoHeight}`);
-    // We'll use the first onsize callback as an indication that video has started
-    // playing out.
-    if (startTime) {
-      const elapsedTime = window.performance.now() - startTime;
-      console.log('Setup time: ' + elapsedTime.toFixed(3) + 'ms');
-      startTime = null;
-    }
-  });
-
   var localStream;
   let pc1;
   let pc2;
@@ -47,35 +32,32 @@ localVideo.addEventListener('loadedmetadata', function() {
       offerToReceiveVideo: 1
   };
 
-  function getName(pc) {
-    return (pc === pc1) ? 'pc1' : 'pc2';
-  }
-  
-  function getOtherPc(pc) {
-    return (pc === pc1) ? pc2 : pc1;
-  }
 
 async function start(){
+        //tworzymy obekt RTCPeerConnection
+    try{
+        console.log('RTCPEErConnection configuration:',configuration)
+        const localPeerConnection = new RTCPeerConnection(configuration);
+        localPeerConnection.addEventListener('icecandidate',handleConnection);
+        localPeerConnection.addEventListener('oniceconnectionstatechange',handleConnectionChange);
+    }catch(e){
+        console.error('RTCPeerConnection error',e.name)
+    }
+        //pobieramy strumien multimediow i przekazujemy go do obiektu video oraz RTCPeerConnection
     try {
-       
-        console.log('Request for local stream');
         const stream = await navigator.mediaDevices.getUserMedia(constraints);
-        console.log('received local stream');
         localVideo.srcObject = stream;
-        localStream = stream;
+        localStream = stream;   //zapisanie wartosci 'globalnie'
+        localPeerConnection.addStream(localStream);
         console.log('start success')
-        
     }catch(e){
         console.error('getUserMedia() error:',e.name);
     }
+
 };
 
 async function call(){
-    console.log("start call");
-    startTime = window.performance.now(); //do zliczania czasu 
-    console.log('RTCPEErConnection configuration:',configuration)
     
-    pc1 = new RTCPeerConnection(configuration);
     console.log('Created local peer connection object pc1');
     pc2 = new RTCPeerConnection(configuration);
     console.log('Created local peer connection object pc2');

@@ -92,6 +92,7 @@ localVideo.addEventListener('loadedmetadata', function() {
   var localStream;
   let pc1;
   let pc2;
+
   const offerOptions = {
       offerToReceiveAudio: 1,
       offerToReceiveVideo: 1
@@ -107,12 +108,14 @@ localVideo.addEventListener('loadedmetadata', function() {
 
 async function start(){
     try {
+       
         console.log('Request for local stream');
         const stream = await navigator.mediaDevices.getUserMedia(constraints);
         console.log('received local stream');
         localVideo.srcObject = stream;
         localStream = stream;
         console.log('start success')
+        console.trace('trace dziala')
     }catch(e){
         console.error('getUserMedia() error:',e.name);
     }
@@ -128,10 +131,13 @@ async function call(){
     pc2 = new RTCPeerConnection(configuration);
     console.log('Created local peer connection object pc2');
 //TO ADDD
-pc2.addEventListener('icecandidate', e => onIceCandidate(pc2, e));
-pc1.addEventListener('iceconnectionstatechange', e => onIceStateChange(pc1, e));
-pc2.addEventListener('iceconnectionstatechange', e => onIceStateChange(pc2, e));
-pc2.addEventListener('track', gotRemoteStream);
+    console.log('pc1: ', pc1);
+    pc2.addEventListener('icecandidate', e => onIceCandidate(pc2, e));
+    pc1.addEventListener('oniceconnectionstatechange', e => onIceStateChange(pc1, e));
+   // pc2.addEventListener('iceconnectionstatechange', e => onIceStateChange(pc2, e)); // już nie ma a przynajmniej w firefox 
+    pc2.addEventListener('track', e => gotRemoteStream(e));
+    localStream.getTracks().forEach(track => pc1.addTrack(track, localStream));
+    console.log('Added local stream to pc1');
 
 try{
     console.log('pc1 createOffer start');
@@ -169,8 +175,9 @@ async function onCreateOfferSuccess(desc){
 };
 
 function gotRemoteStream(e){
-    if(guestVideo.srcObject !== e.stream[0]){
-        guestVideo.srcObject = e.stream[0];
+    console.log("gotRemoteStream",e);
+    if(guestVideo.srcObject !== e.streams[0]){
+        guestVideo.srcObject = e.streams[0];
         console.log('p2p received remote stream');
     }
 };
@@ -200,6 +207,13 @@ async function onIceCandidate(pc,event){
     console.log(`${getName(pc)} ICE candidate:\n${event.candidate ? event.candidate.candidate : '(null)'}`);
 
 }
+function onIceStateChange(pc, event) {
+    if (pc) {
+      console.log(`${getName(pc)} ICE state: ${pc.iceConnectionState}`);
+      console.log('ICE state change event: ', event);
+    }
+  }
+
 function hangup(){
     console.log('Ending call');
     pc1.close();

@@ -11,7 +11,7 @@ const configuration = {
 
     //stosowane w połączeniuw  celu uwierzytelniania
     //domyślnie sam sobie generuje dla każdej instancji RTCPeerConnection
-    //certificates: 
+    certificates: 'I dont know',
 //##############################################################################################################################################
 
     //Niepodpisana 16 bitowa  wartosć całkowita określająca wstępną pulle kandydatów do ICE
@@ -45,8 +45,17 @@ const configuration = {
             ]
         }
 
-    ]
+    ],
 //##############################################################################################################################################
 
+    // polityka transportowa w ICE domyślnie "all"
+    iceTransportPolicy: "all",
+//##############################################################################################################################################
 
+    //po ustawieniu tego połączy nas z innym użytkownikiem tylko wtedy gdy ten będzie również miał to skonfigurowane pod tą samą nazwa
+    peerIdentity: "potato"      ,             //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Do sprawdzenia
+//##############################################################################################################################################
+
+    //polityka multipleksera RTCP, która ma być używana podczas gromadzenia kandydatów do ICE, require wartosc domyślna
+     rtcpMuxPolicy: 'require'
 };
