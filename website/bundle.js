@@ -57,6 +57,7 @@ const constraints = window.constraints = {
 
 //Ustawienia servera
 const configuration = {
+    bundlePolicy:"max-bundle",
     iceServers:[{
         urls: "stun:stun.services.mozilla.com",
         username: "louis@mozilla.com", 
@@ -118,9 +119,10 @@ async function start(){
 };
 
 async function call(){
-     console.log("start call");
-     startTime = window.performance.now(); //do zliczania czasu 
+    console.log("start call");
+    startTime = window.performance.now(); //do zliczania czasu 
     console.log('RTCPEErConnection configuration:',configuration)
+    
     pc1 = new RTCPeerConnection(configuration);
     console.log('Created local peer connection object pc1');
     pc2 = new RTCPeerConnection(configuration);
@@ -159,6 +161,7 @@ async function onCreateOfferSuccess(desc){
 
     try{
         const answer = await pc2.createAnswer();
+        await onCreateAnswerSuccess(answer);
     }catch(e){
         console.log(`Failed to set session description: ${e.toString()}`);
     }
