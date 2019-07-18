@@ -63,7 +63,7 @@ function errorMsg(msg, error) {
 
 
 
-async function init(e,videoOwner,run) {
+async function init(e,videoOwner) {
   
   try {  
     var videoDestiny = videoOwner;
@@ -74,18 +74,23 @@ async function init(e,videoOwner,run) {
    console.log("! 1",constraints);
     var stream = await navigator.mediaDevices.getUserMedia(constraints);
     console.log("2");
-    if (run == true){
+
     handleSuccess(stream,videoDestiny);
     console.log("3");
-    }else{
-      return stream;
-    }
-
-    e.target.disabled = true;
+    
   
   } catch (e) {
     handleError(e);
   }
+  
+  
+    // navigator.mediaDevices.getUserMedia(constraints).then(stream =>{
+    //     const video = document.querySelector(videoOwner);
+    //     video.srcObject = stream;
+    //    }).catch(e=>{ console.error(e)})
+  
+
+
 }
 
 module.exports = {init, constraints}

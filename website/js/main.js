@@ -5,7 +5,7 @@ var rtcp2p = require("./rtcp2p.js");
 
 // Example I
 console.log("Example I");
-document.querySelector('#connectUser').addEventListener('click', e => script_video.init(e,"#videoUser",true));
+document.querySelector('#connectUser').addEventListener('click', e => script_video.init(e,"#videoUser"));
 document.querySelector('#mirrorButton').addEventListener('click', function(){document.querySelector('#mirror').style.display = "inline"});
 
 
@@ -20,6 +20,11 @@ document.querySelector('#snapButton').addEventListener('click',e => {
 
 
 //Example III
+
+
+
+
+//Example IV
 console.log("Example III");
 document.querySelector('#RTCp2pButton').addEventListener('click', function(){document.querySelector('#RTCp2p').style.display = "inline"});
 

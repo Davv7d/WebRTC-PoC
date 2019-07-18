@@ -53,7 +53,7 @@ var rtcp2p = require("./rtcp2p.js");
 
 // Example I
 console.log("Example I");
-document.querySelector('#connectUser').addEventListener('click', e => script_video.init(e,"#videoUser",true));
+document.querySelector('#connectUser').addEventListener('click', e => script_video.init(e,"#videoUser"));
 document.querySelector('#mirrorButton').addEventListener('click', function(){document.querySelector('#mirror').style.display = "inline"});
 
 
@@ -68,6 +68,11 @@ document.querySelector('#snapButton').addEventListener('click',e => {
 
 
 //Example III
+
+
+
+
+//Example IV
 console.log("Example III");
 document.querySelector('#RTCp2pButton').addEventListener('click', function(){document.querySelector('#RTCp2p').style.display = "inline"});
 
@@ -321,29 +326,34 @@ function errorMsg(msg, error) {
 
 
 
-async function init(e,videoOwner,run) {
+async function init(e,videoOwner) {
   
-  try {  
-    var videoDestiny = videoOwner;
-    /*
-      Do zrobienia by działało na wszystkich przegladarkach teraz tylko firefox
-    */
+  // try {  
+  //   var videoDestiny = videoOwner;
+  //   /*
+  //     Do zrobienia by działało na wszystkich przegladarkach teraz tylko firefox
+  //   */
    
-   console.log("! 1",constraints);
-    var stream = await navigator.mediaDevices.getUserMedia(constraints);
-    console.log("2");
-    if (run == true){
-    handleSuccess(stream,videoDestiny);
-    console.log("3");
-    }else{
-      return stream;
-    }
+  //  console.log("! 1",constraints);
+  //   var stream = await navigator.mediaDevices.getUserMedia(constraints);
+  //   console.log("2");
 
-    e.target.disabled = true;
+  //   handleSuccess(stream,videoDestiny);
+  //   console.log("3");
+    
   
-  } catch (e) {
-    handleError(e);
-  }
+  // } catch (e) {
+  //   handleError(e);
+  // }
+  
+  
+    navigator.mediaDevices.getUserMedia(constraints).then(stream =>{
+        const video = document.querySelector(videoOwner);
+        video.srcObject = stream;
+       }).catch(e=>{ console.error(e)})
+  
+
+
 }
 
 module.exports = {init, constraints}
