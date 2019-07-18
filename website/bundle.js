@@ -1,21 +1,50 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
+'use strict';
 
-async function init(e,videoStream,canvasID){
+const constraints = {
+    audio: false,
+    video: true
+  };
+var canvas;
+var filterSelect;
+var video;
+async function init(e,videoStream,canvasID,canvasSnapFiltr){
     try{
-        const video = document.querySelector(videoStream);
-        const canvas = window.canvas = document.querySelector(canvasID);
-        canvas.width = 480;
-        canvas.height = 360;
-    
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-        canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+        video = window.video = document.querySelector(videoStream);
+        canvas = window.canvas = document.querySelector(canvasID);
+        filterSelect = canvasSnapFiltr;
+        filterSelect.onchange = function(){
+            video.className = filterSelect.value
+            
+        }
+        canvas.width = 640;
+        canvas.height = 480;
+
+        navigator.mediaDevices.getUserMedia(constraints).then(stream =>{
+            window.stream = stream;
+            video.srcObject = stream;
+            
+        }).catch(error => {
+            cosole.error("error in function getUserMedia",error);
+        });
+
         }catch(e){
         console.error(e);  
     }
 };
+function snap(){
+    console.log('snap');
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    console.log(canvas)
+    console.log(video)
+    canvas.className = filterSelect.value;
+    canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+}
 
-module.exports = {init}
+
+
+module.exports = {init,snap}
 },{}],2:[function(require,module,exports){
 var script_video = require('./script_video.js');
 //var script_video = require('./getAudioParameters.js');
@@ -30,11 +59,12 @@ document.querySelector('#mirrorButton').addEventListener('click', function(){doc
 
 //Example II
 console.log("Example II");
+const canvasSnapFiltr = document.querySelector('select#filter');
 document.querySelector('#snapButton').addEventListener('click',e => {
-    script_video.init(e,"#videoForSnap",true),
-    document.querySelector('#snapShot').style.display = "inline"
+    canvasVideoCapture.init(e,"#videoForSnap","#canvasSnapShot",canvasSnapFiltr);
+    document.querySelector('#snapShot').style.display = "inline";
     });
-document.querySelector('#makeSnapShot').addEventListener('click',e => canvasVideoCapture.init(e,"#videoForSnap","#canvasSnapShot"));
+    document.querySelector('#makeSnapShot').addEventListener('click',e => canvasVideoCapture.snap());
 
 
 //Example III
@@ -115,7 +145,7 @@ async function start(){
         localVideo.srcObject = stream;
         localStream = stream;
         console.log('start success')
-        console.trace('trace dziala')
+        
     }catch(e){
         console.error('getUserMedia() error:',e.name);
     }
@@ -298,6 +328,7 @@ async function init(e,videoOwner,run) {
     /*
       Do zrobienia by działało na wszystkich przegladarkach teraz tylko firefox
     */
+   
    console.log("! 1",constraints);
     var stream = await navigator.mediaDevices.getUserMedia(constraints);
     console.log("2");

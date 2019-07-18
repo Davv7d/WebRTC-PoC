@@ -1,17 +1,46 @@
+'use strict';
 
-async function init(e,videoStream,canvasID){
+const constraints = {
+    audio: false,
+    video: true
+  };
+var canvas;
+var filterSelect;
+var video;
+async function init(e,videoStream,canvasID,canvasSnapFiltr){
     try{
-        const video = document.querySelector(videoStream);
-        const canvas = window.canvas = document.querySelector(canvasID);
-        canvas.width = 480;
-        canvas.height = 360;
-    
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-        canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+        video = window.video = document.querySelector(videoStream);
+        canvas = window.canvas = document.querySelector(canvasID);
+        filterSelect = canvasSnapFiltr;
+        filterSelect.onchange = function(){
+            video.className = filterSelect.value
+            
+        }
+        canvas.width = 640;
+        canvas.height = 480;
+
+        navigator.mediaDevices.getUserMedia(constraints).then(stream =>{
+            window.stream = stream;
+            video.srcObject = stream;
+            
+        }).catch(error => {
+            cosole.error("error in function getUserMedia",error);
+        });
+
         }catch(e){
         console.error(e);  
     }
 };
+function snap(){
+    console.log('snap');
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    console.log(canvas)
+    console.log(video)
+    canvas.className = filterSelect.value;
+    canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+}
 
-module.exports = {init}
+
+
+module.exports = {init,snap}

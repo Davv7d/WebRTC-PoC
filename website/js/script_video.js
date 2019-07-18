@@ -70,6 +70,7 @@ async function init(e,videoOwner,run) {
     /*
       Do zrobienia by działało na wszystkich przegladarkach teraz tylko firefox
     */
+   
    console.log("! 1",constraints);
     var stream = await navigator.mediaDevices.getUserMedia(constraints);
     console.log("2");

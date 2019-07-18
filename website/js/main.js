@@ -11,11 +11,12 @@ document.querySelector('#mirrorButton').addEventListener('click', function(){doc
 
 //Example II
 console.log("Example II");
+const canvasSnapFiltr = document.querySelector('select#filter');
 document.querySelector('#snapButton').addEventListener('click',e => {
-    script_video.init(e,"#videoForSnap",true),
-    document.querySelector('#snapShot').style.display = "inline"
+    canvasVideoCapture.init(e,"#videoForSnap","#canvasSnapShot",canvasSnapFiltr);
+    document.querySelector('#snapShot').style.display = "inline";
     });
-document.querySelector('#makeSnapShot').addEventListener('click',e => canvasVideoCapture.init(e,"#videoForSnap","#canvasSnapShot"));
+    document.querySelector('#makeSnapShot').addEventListener('click',e => canvasVideoCapture.snap());
 
 
 //Example III

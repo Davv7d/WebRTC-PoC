@@ -55,6 +55,21 @@ async function start(){
     }
 
 };
+function handleConnection(event){
+    const peerConnection = event.target;
+    const iceCandidate = event.candidate;
+
+    if(iceCandidate){
+        const newIceCandidate = new RTCIceCandidate(onIceCandidate);
+        const otherPeer = getOtherPeer(peerConnection);
+
+        
+
+    }
+
+
+
+}
 
 async function call(){
     

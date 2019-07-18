@@ -12,9 +12,11 @@
 <body>
     <div id="container">
         <div id="buttons">
+                <!-- Buttons-->
             <button id="mirrorButton"> Mirror</button>
-            <button id="snapButton">screenButton</button>
-            <button id="RTCp2pButton">RTC P2P connection</button>
+            <button id="snapButton"> Snap</button>
+            <button id="redordButton">Record Video</button>
+            <button id="RTCp2pButton"># nosuport RTC P2P connection</button>
 
         </div>
             <!--  Example I Mirror-->
@@ -37,12 +39,40 @@
                         <canvas id="canvasSnapShot"></canvas>
                     </div>
                 </div>
-
+                <label for="filter">Filter: </label>
+                <select id="filter">
+                    <option value="none">None</option>
+                    <option value="blur">Blur</option>
+                    <option value="grayscale">Grayscale</option>
+                    <option value="invert">Invert</option>
+                    <option value="sepia">Sepia</option>
+                </select>
             </br><button id="makeSnapShot">Take snapshot</button>
         </div>
         
+        <!-- Example III Video recording-->
 
-            <!-- Example III Video chat -->
+        <div id="videoRecord" style="display:none">
+            <h1>Video Record</h1>
+            <div class="row">
+                <div class="col">
+                    <video id="recordVideo" autoplay playsinline></video>
+                </div>
+                <div class="col">
+                    <video id="recorderVideo" autoplay playsinline></video>
+                </div>
+            </div>
+            <div>
+                    <button id="startRecordButton">Start camera</button>
+                    <button id="recordRecordButton" disabled>Start Recording</button>
+                    <button id="playRecordButton" disabled>Play</button>
+                    <button id="downloadRecordButton" disabled>Download</button>
+            </div>
+        
+        </div>
+
+
+            <!-- Example IV Video chat -->
 
         <div id="RTCp2p" style="display:none">
             <div class="row">
@@ -53,10 +83,12 @@
                     <video id="RTCp2pUser2" autoplay playinline></video>
                 </div>
             </div>
-
-            <button id="startRTCp2p">Start</button>
-            <button id="callRTCp2p">Call</button>
-            <button id="hangupRTCp2p">Hang Up</button>
+            <div>
+                <button id="startRTCp2p">Start</button>
+                <button id="callRTCp2p">Call</button>
+                <button id="hangupRTCp2p">Hang Up</button>
+            </div>
+            
 
 
 
