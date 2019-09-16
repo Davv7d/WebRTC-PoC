@@ -9,9 +9,11 @@ var filterSelect;
 var video;
 async function init(e,videoStream,canvasID,canvasSnapFiltr){
     try{
+
         video = window.video = document.querySelector(videoStream);
         canvas = window.canvas = document.querySelector(canvasID);
         filterSelect = canvasSnapFiltr;
+        
         filterSelect.onchange = function(){
             video.className = filterSelect.value
             
@@ -21,8 +23,7 @@ async function init(e,videoStream,canvasID,canvasSnapFiltr){
 
         navigator.mediaDevices.getUserMedia(constraints).then(stream =>{
             window.stream = stream;
-            video.srcObject = stream;
-            
+            video.srcObject = stream;  
         }).catch(error => {
             cosole.error("error in function getUserMedia",error);
         });

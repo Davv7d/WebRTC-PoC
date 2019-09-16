@@ -15,7 +15,7 @@ const configuration = {
 //##############################################################################################################################################
 
     //Niepodpisana 16 bitowa  wartosć całkowita określająca wstępną pulle kandydatów do ICE
-    //Domyślna wartość 0 oznacza ,że nie wystąpi żadne wstępne pobieranie  zwyprzedzeniem 
+    //Domyślna wartość 0 oznacza ,że nie wystąpi żadne wstępne pobieranie  z wyprzedzeniem 
     iceCandidatePoolSize: 0,
 //##############################################################################################################################################
 

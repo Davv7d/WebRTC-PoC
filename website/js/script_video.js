@@ -14,6 +14,7 @@ const constraints = window.constraints = {
       max: 720
     }
   }
+  
 };
 
 
@@ -33,7 +34,7 @@ function handleSuccess(stream,videoDestiny) {
   console.log('Got stream with constraints:', constraints);
   console.log(`Using video device: ${videoTracks[0].label}`);
   //console.log(`videoTracks[0].stop() ${videoTracks[0].stop()}`);
-// !!! I am not sure about it , I mean if we need it for anything ????
+
   window.stream = stream; // make variable available to browser console
   //Transmit video data to object in html 
   video.srcObject = stream;
@@ -65,30 +66,75 @@ function errorMsg(msg, error) {
 
 async function init(e,videoOwner) {
   
-  try {  
-    var videoDestiny = videoOwner;
-    /*
-      Do zrobienia by działało na wszystkich przegladarkach teraz tylko firefox
-    */
+  // try {  
+  //   var videoDestiny = videoOwner;
+  //   /*
+  //     Do zrobienia by działało na wszystkich przegladarkach teraz tylko firefox
+  //   */
    
-   console.log("! 1",constraints);
-    var stream = await navigator.mediaDevices.getUserMedia(constraints);
-    console.log("2");
+  //  console.log("! 1",constraints);
+  //   var stream = await navigator.mediaDevices.getUserMedia(constraints);
+  //   console.log("2");
 
-    handleSuccess(stream,videoDestiny);
-    console.log("3");
+  //   handleSuccess(stream,videoDestiny);
+  //   console.log("3");
     
   
-  } catch (e) {
-    handleError(e);
+  // } catch (e) {
+  //   handleError(e);
+  // }
+  
+
+
+
+
+  
+  navigator.mediaDevices.getUserMedia(
+      {
+        audio: false,
+        video:true
+      }
+  ).then(stream =>{
+        const video = document.querySelector(videoOwner);
+        video.srcObject = stream;
+
+        let myVideoTrack = stream.getTracks();
+        console.log(myVideoTrack);
+    
+  }).catch(e=>{ console.error(e)})
+  
+
+
+
+let supportedConstraints = navigator.mediaDevices.getSupportedConstraints();
+for (let constraint in supportedConstraints) {
+  if (supportedConstraints.hasOwnProperty(constraint)) {
+    console.log(constraint);
   }
-  
-  
-    // navigator.mediaDevices.getUserMedia(constraints).then(stream =>{
-    //     const video = document.querySelector(videoOwner);
-    //     video.srcObject = stream;
-    //    }).catch(e=>{ console.error(e)})
-  
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 }

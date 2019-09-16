@@ -75,7 +75,12 @@ async function call(){
     startTime = window.performance.now(); //do zliczania czasu 
     console.log('RTCPEErConnection configuration:',configuration)
     
+    
     pc1 = new RTCPeerConnection(configuration);
+
+
+
+    
     console.log('Created local peer connection object pc1');
     pc2 = new RTCPeerConnection(configuration);
     console.log('Created local peer connection object pc2');

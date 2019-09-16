@@ -10,9 +10,11 @@ var filterSelect;
 var video;
 async function init(e,videoStream,canvasID,canvasSnapFiltr){
     try{
+
         video = window.video = document.querySelector(videoStream);
         canvas = window.canvas = document.querySelector(canvasID);
         filterSelect = canvasSnapFiltr;
+        
         filterSelect.onchange = function(){
             video.className = filterSelect.value
             
@@ -22,8 +24,7 @@ async function init(e,videoStream,canvasID,canvasSnapFiltr){
 
         navigator.mediaDevices.getUserMedia(constraints).then(stream =>{
             window.stream = stream;
-            video.srcObject = stream;
-            
+            video.srcObject = stream;  
         }).catch(error => {
             cosole.error("error in function getUserMedia",error);
         });
@@ -161,7 +162,12 @@ async function call(){
     startTime = window.performance.now(); //do zliczania czasu 
     console.log('RTCPEErConnection configuration:',configuration)
     
+    
     pc1 = new RTCPeerConnection(configuration);
+
+
+
+    
     console.log('Created local peer connection object pc1');
     pc2 = new RTCPeerConnection(configuration);
     console.log('Created local peer connection object pc2');
@@ -277,6 +283,7 @@ const constraints = window.constraints = {
       max: 720
     }
   }
+  
 };
 
 
@@ -296,7 +303,7 @@ function handleSuccess(stream,videoDestiny) {
   console.log('Got stream with constraints:', constraints);
   console.log(`Using video device: ${videoTracks[0].label}`);
   //console.log(`videoTracks[0].stop() ${videoTracks[0].stop()}`);
-// !!! I am not sure about it , I mean if we need it for anything ????
+
   window.stream = stream; // make variable available to browser console
   //Transmit video data to object in html 
   video.srcObject = stream;
@@ -346,12 +353,57 @@ async function init(e,videoOwner) {
   //   handleError(e);
   // }
   
+
+
+
+
   
-    navigator.mediaDevices.getUserMedia(constraints).then(stream =>{
+  navigator.mediaDevices.getUserMedia(
+      {
+        audio: false,
+        video:true
+      }
+  ).then(stream =>{
         const video = document.querySelector(videoOwner);
         video.srcObject = stream;
-       }).catch(e=>{ console.error(e)})
+
+        let myVideoTrack = stream.getTracks();
+        console.log(myVideoTrack);
+    
+  }).catch(e=>{ console.error(e)})
   
+
+
+
+let supportedConstraints = navigator.mediaDevices.getSupportedConstraints();
+for (let constraint in supportedConstraints) {
+  if (supportedConstraints.hasOwnProperty(constraint)) {
+    console.log(constraint);
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 }
