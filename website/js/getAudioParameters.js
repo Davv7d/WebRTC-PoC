@@ -1,1 +1,0 @@
-//do zrobienia + jeszcze  mozliwosc zatrzymywania
